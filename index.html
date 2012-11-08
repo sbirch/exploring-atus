@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+	<title>ATUS</title>
+</head>
+<body>
+	<canvas height="24958" width="1440" id="canvas" />
+	<script>
+	var DATA = null;
+	function _DATA(d){
+		DATA = d;
+		var ctx = document.getElementById('canvas').getContext('2d');
+		ctx.fillStyle = "#000";
+		ctx.strokeStyle = "#000";
+		ctx.lineWidth = 10;
+
+		var x = 0;
+		
+		for(var case_id in DATA){
+			if (!DATA.hasOwnProperty(case_id)){continue;}
+			
+			var kill;
+			
+			for(var i=0;i<DATA[case_id].length;i++){
+				ctx.beginPath();
+				ctx.strokeStyle = "hsl(" + DATA[case_id][i].code * 20 + ", 50%, 75%)";
+				
+				kill = false;
+				if (DATA[case_id][i].start > DATA[case_id][i].stop){
+					DATA[case_id][i].stop = 1439;
+					kill = true;
+				}
+
+				ctx.moveTo(DATA[case_id][i].start-240 + 0.5, x + 0.5);
+				ctx.lineTo(DATA[case_id][i].stop-240 + 0.5, x + 0.5);
+				ctx.stroke();
+				
+
+				if (kill){break;}
+			}
+			
+
+			x+=ctx.lineWidth;
+		}
+		
+
+		console.log('Done!');
+	}
+	</script>
+<script src="activities.jsonp"></script>
+</body>
+</html>
